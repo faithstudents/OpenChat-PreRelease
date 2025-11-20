@@ -7,20 +7,19 @@
 #profile-modal {
     display: none;
     position: absolute;
-    bottom: 100px;
-    left: 10px;
-    background: #2a2d31;
+    bottom: 68px;
+    left: 8px;
+    background: #202024;
     border-radius: 8px;
     padding: 15px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    width: 220px;
-    z-index: 2000;
+    width: 342px;
+    height: 400px;
 }
 
 .profile-modal-content {
     display: flex;
     flex-direction: column;
-    align-items: center;
     gap: 10px;
     position: relative;
 }
@@ -89,4 +88,45 @@
 
 #cancelEdit:hover {
     background: #666;
+}
+
+
+.profile_modal_info_container {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.description {
+    white-space: normal;
+    overflow-wrap: break-word; /* ensures long words wrap too */
+}
+
+.profile-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.profile-controls button {
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background: #171717;
+    color: #fff;
+    padding: 8px 12px;
+}
+
+.profile-controls button:hover {
+    background-color: #313131;
+    color: #fff;
+}
+
+.profile_modal_divider1 {
+    height: 10px;
+}
+
+.profile_modal_divider2 {
+    height: 100px;
 }

@@ -163,6 +163,7 @@ header .left-aligned button:hover {
     flex-shrink: 0;
     justify-content: space-between;
     border-right: 1px solid #2a2d31;
+    overflow-y: auto;
 }
 
 #sidebar h2 {
@@ -189,40 +190,90 @@ header .left-aligned button:hover {
 }
 
 /* Profile section */
-#sidebar #profile {
+#profile {
+    position: absolute;
+    width: 342px;
     margin-top: auto;
     padding: 0.5rem;
-    background-color: #2a2d31;
+    background-color: #202024;
     border-radius: 8px;
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    cursor: pointer;
     transition: all 0.2s ease;
+    z-index: 999;
+    bottom: 5px;
+    left: 8px;
+    justify-content: space-between;
+    height: 60px;
 }
 
-#sidebar #profile:hover {
+#profile #profile_info_container {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    width: 175px;
+    padding: 2px 8px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#profile #profile_info_container:hover {
     background-color: #3a3d42;
 }
 
-#sidebar #profile img {
+#profile #settings_btn {
+    background: none;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #ccc;
+    font-size: 28px;
+}
+
+#profile #settings_btn:hover {
+    background-color: #3a3d42;
+}
+
+#profile #notifications_toggle {
+    background: none;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #ccc;
+    font-size: 20px;
+}
+
+#profile #notifications_toggle:hover {
+    background-color: #3a3d42;
+}
+
+#profile img {
     width: 32px;
     height: 32px;
     border-radius: 50%;
 }
 
-#sidebar #profile .profile-info {
+#profile .profile-info {
     display: flex;
     flex-direction: column;
 }
 
-#sidebar #profile .profile-info span {
+#profile .profile-info span {
     color: #ddd;
     font-size: 0.85rem;
 }
 
-#sidebar #profile .profile-info #profile-status {
+#profile .profile-info .profile-status {
     color: #00ff00;
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#profile .profile-info #profile-username {
+    font-size: 18px;
 }
 
 #channel-list {
@@ -261,7 +312,7 @@ header .left-aligned button:hover {
     background-color: #1a1a1e;
     display: flex;
     flex-direction: column;
-    padding: 1rem;
+    padding: 0;
     overflow: hidden;
 }
 
@@ -270,7 +321,6 @@ header .left-aligned button:hover {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    gap: 0.1rem;
     overflow-y: auto;
     scroll-behavior: smooth;
 }
@@ -656,4 +706,83 @@ header .left-aligned button:hover {
   #sidebar-overlay.active {
     display: block;
   }
+}
+
+/* Container for message buttons */
+.message .button-container {
+    display: flex;
+    gap: 6px;
+    position: absolute;
+    right: 8px;
+    top: -30px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: rgba(58, 61, 66, 0.9);
+    backdrop-filter: blur(6px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* Show on hover */
+.message:hover .button-container {
+    opacity: 1;
+    transform: translateY(-2px);
+}
+
+/* All buttons inside */
+.message .button-container button {
+    background: #2d2f33;
+    color: #fff;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Hover effect for buttons */
+.message .button-container button:hover {
+    background: #48BB78; /* green accent, matches username color */
+    transform: scale(1.1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+/* Reaction button with emoji */
+.message .reaction-btn {
+    font-size: 1.1rem;
+    padding: 4px 8px;
+}
+
+/* More menu dropdown */
+.message .more-btn + div {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 32px;
+    right: 0;
+    background: rgba(0,0,0,0.95);
+    border-radius: 8px;
+    padding: 6px 0;
+    min-width: 120px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    z-index: 1001;
+}
+
+/* Dropdown items */
+.message .more-btn + div div {
+    padding: 8px 12px;
+    cursor: pointer;
+    color: #fff;
+    transition: background 0.15s ease;
+}
+
+.message .more-btn + div div:hover {
+    background: #48BB78;
+    color: #000;
 }

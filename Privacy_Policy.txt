@@ -1,0 +1,29 @@
+-----------------------
+OpenChat Privacy Policy
+-----------------------
+
+OpenChat values your privacy. We do not sell your data to third parties.
+
+-----------------------
+Data Collection
+-----------------------
+OpenChat collects only the information necessary to provide our service, such as your account information and messages. All data is stored securely in our database and protected using industry-standard security measures.
+
+-----------------------
+Access to Messages
+-----------------------
+OpenChat admins do not read your private messages. The only exceptions are:
+
+When required by law or legal authorities.
+
+When investigating incidents that violate our Terms of Service or community guidelines.
+
+-----------------------
+User Rights
+-----------------------
+You may request to access, modify, or delete your account and associated data by contacting us.
+
+-----------------------
+Updates to This Policy
+-----------------------
+We may update this Privacy Policy occasionally. Users will be notified of significant changes.

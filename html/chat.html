@@ -2,86 +2,134 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Enable Web App Mode -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Enable Web App Mode -->
+	<meta name="apple-mobile-web-app-capable" content="yes">
 
-  <!-- Set the status bar style (black-translucent is most common) -->
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<!-- Set the status bar style (black-translucent is most common) -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-  <!-- App Title for Home Screen -->
-  <meta name="apple-mobile-web-app-title" content="OpenChat Mobile">
-  <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/openchat.jpeg">
-  <link rel="icon" type="image/jpeg" sizes="192x192" href="../assets/images/openchat.jpeg">
+	<!-- App Title for Home Screen -->
+	<meta name="apple-mobile-web-app-title" content="OpenChat Mobile">
+	<link rel="apple-touch-icon" sizes="180x180" href="../assets/images/openchat.jpeg">
+	<link rel="icon" type="image/jpeg" sizes="192x192" href="../assets/images/openchat.jpeg">
 
-  <title>OpenChat</title>
+	<title>OpenChat</title>
 
-  <!-- CSS Links -->
-  <link rel="stylesheet" href="../css/chat.css" />
-  <link rel="stylesheet" href="../css/sidebar1.css">
-  <link rel="stylesheet" href="../css/profileModal.css">
+	<!-- CSS Links -->
+	<link rel="stylesheet" href="../css/chat.css" />
+	<link rel="stylesheet" href="../css/sidebar1.css">
+	<link rel="stylesheet" href="../css/profileModal.css">
+	<link rel="stylesheet" href="../css/settingsModal.css">
 </head>
 
 <body>
-  <header>
-    <h3 id="welcome-msg">Loading...</h3>
+	<header>
+		<h3 id="welcome-msg">Loading...</h3>
 
-    <div class="left-aligned">
-      <button id="rulesBtn" class="headerBtn">Rules</button>
-      <button id="logoutBtn" class="headerBtn">Logout</button>
-    </div>
-  </header>
+		<div class="left-aligned">
+			<button id="rulesBtn" class="headerBtn">Rules</button>
+			<button id="logoutBtn" class="headerBtn">Logout</button>
+		</div>
+	</header>
 
-  <div id="chat-section">
-    <aside id="sidebar1">
-      <button class="sidebar1-link" id="new_chat_btn" style="color: #fff; font-size: 24px;">&plus;</button>
-      <button class="sidebar1-link" id="dms_button">DM's</button>
-      <button id="main-chat" class="active"><a href="chat.html" class="sidebar1-link">Main Chat :D</a></button>
-    </aside>
-    <aside id="sidebar">
-      <h2>Channels</h2>
+	<div id="chat-section">
+		<aside id="sidebar1">
+			<button class="sidebar1-link" id="new_chat_btn" style="color: #fff; font-size: 24px;">&plus;</button>
+			<button class="sidebar1-link" id="dms_button">DM's</button>
+			<button id="main-chat" class="active"><a href="chat.html" class="sidebar1-link">Main Chat :D</a></button>
+		</aside>
+		<aside id="sidebar">
+			<h2>Channels</h2>
 
-      <ul id="channel-list"></ul>    <!-- This <li> element list gets changed to the names of the users for dms. When a DM is clicked it displays everything in the main chat window. -->
+			<ul id="channel-list"></ul>
+			<!-- This <li> element list gets changed to the names of the users for dms. When a DM is clicked it displays everything in the main chat window. -->
+		</aside>
 
-      <!-- Profile Modal -->
-      <div id="profile-modal" class="profile-modal">
-        <div class="profile-modal-content">
-          <span id="close-profile-modal">&times;</span>
-          <img id="modal-avatar" src="../assets/images/default-avatar.png" alt="Avatar">
-          <h2 id="modal-username">Loading...</h2>
-          <p id="modal-status" class="user-status" style="color: #00ff00 !important;">Online</p>
+		<!-- Profile Modal -->
+		<div id="profile-modal" class="profile-modal">
+			<div class="profile-modal-content">
+				<div class="profile_modal_info_container">
+					<span id="close-profile-modal">&times;</span>
+					<img id="modal-avatar" src="../assets/images/default-avatar.png" alt="Avatar">
+					<div class="profile_modal_username">
+						<h2 id="modal-username">Loading...</h2>
+						<p id="modal-status" class="user-status" style="color: #00ff00 !important;">Online</p>
+					</div>
+				</div>
+				<div class="profile_modal_divider1"></div>
 
-          <!-- Edit section -->
-          <button id="editName">Edit Display Name</button>
-          <div id="editNameForm" class="edit-name-form">
-            <input type="text" id="newDisplayName" placeholder="Enter new display name">
-            <div class="edit-buttons">
-              <button id="saveName">Save</button>
-              <button id="cancelEdit">Cancel</button>
-            </div>
-          </div>
+				<!-- Edit section -->
+				<div id="editNameForm" class="edit-name-form">
+					<input type="text" id="newDisplayName" placeholder="Enter new display name">
+					<div class="edit-buttons">
+						<button id="saveName">Save</button>
+						<button id="cancelEdit">Cancel</button>
+					</div>
+				</div>
 
-          <p id="modal-description">No description yet.</p>
-        </div>
-      </div>
+				<div class="description">
+					<p id="modal-description">No description yet.</p>
+				</div>
 
-      <style>
-        
-      </style>
-      <div id="profile">
-        <img src="../assets/images/default-avatar.png" alt="My Avatar" />
-        <div class="profile-info">
-          <span id="profile-username">Loading...</span>
-          <span class="profile-status">Online</span>
-        </div>
-      </div>
-    </aside>
+				<div class="profile_modal_divider2"></div>
 
-    <main id="chat-window">
-      <ul id="messages"></ul>
+				<div class="profile-controls">
+					<button id="edit_btn">🖊️ Edit Profile</button>
+					<select id="status-select">
+						<option>Online</option>
+						<option>Offline</option>
+						<option>Do Not Disturb</option>
+					</select>
+				</div>
 
-      <button id="scroll-bottom-btn" style="
+				<!-- <button id="editName">Edit Display Name</button>
+				<button id="editDescription">Edit Description</button> -->
+			</div>
+		</div>
+
+		<!-- Settings Modal -->
+		<div id="settings_modal">
+			<div class="settings_modal_header">
+				<h1>My Account</h1>
+				<button id="settings_exit_btn">&times;</button>
+			</div>
+			<div class="settings_sidebar">
+				<div class="settings_profile_display">
+					<img src="../assets/images/default-avatar.png" alt="My Avatar" id="settings_avatar" />
+					<div class="settings_profile_info">
+						<span id="profile-username">Loading...</span>
+						<span class="profile-status">Edit Profiles</span>
+					</div>
+				</div>
+
+				<a href="https://htwevjqqqyojcbgeevqy.supabase.co/storage/v1/object/public/Policies/Privacy_Policy.txt">Privacy Policy</a>
+
+				<button>My Account</button>
+				<button>Color Mode</button>
+				<button>Privacy Policy</button>
+			</div>
+		</div>
+
+		<div id="profile">
+			<div id="profile_info_container">
+				<img src="../assets/images/default-avatar.png" alt="My Avatar" id="user_avatar" />
+				<div class="profile-info">
+					<span id="profileTab-username">Loading...</span>
+					<span class="profile-status">Online</span>
+				</div>
+			</div>
+			<div class="buttons">
+				<button id="notifications_toggle">&#128276;</button>
+				<button id="settings_btn">&#9881;</button>
+			</div>
+		</div>
+
+		<main id="chat-window">
+			<ul id="messages"></ul>
+
+			<button id="scroll-bottom-btn" style="
           position: fixed;
           bottom: 120px;
           right: 50px;
@@ -97,26 +145,28 @@
           z-index: 1000;
       ">⬇️</button>
 
-      <div id="reply-preview" style="display:none; padding:8px; border-left: 4px solid #7289da; background:#f0f0f0; margin-bottom:4px; position:relative;">
-          <span id="reply-user" style="font-weight:bold;"></span>: 
-          <span id="reply-text"></span>
-          <button id="cancel-reply" style="position:absolute; right:8px; top:8px; background:none; border:none; cursor:pointer;">×</button>
-      </div>
+			<div id="reply-preview"
+				style="display:none; padding:8px; border-left: 4px solid #7289da; background:#f0f0f0; margin-bottom:4px; position:relative;">
+				<span id="reply-user" style="font-weight:bold;"></span>:
+				<span id="reply-text"></span>
+				<button id="cancel-reply"
+					style="position:absolute; right:8px; top:8px; background:none; border:none; cursor:pointer;">×</button>
+			</div>
 
-      <form id="message-form">
-        <label for="image-input" id="upload-image-btn">+</label>
-        <input type="file" id="image-input" accept="image/*" style="display: none;" />
+			<form id="message-form">
+				<label for="image-input" id="upload-image-btn">+</label>
+				<input type="file" id="image-input" accept="image/*" style="display: none;" />
 
-        <input type="text" id="message-input" placeholder="Message @Faith Chat" autocomplete="off" required />
-        <button type="submit">Send</button>
-      </form>
-    </main>
-  </div>
+				<input type="text" id="message-input" placeholder="Message @Faith Chat" autocomplete="off" required />
+				<button type="submit">Send</button>
+			</form>
+		</main>
+	</div>
 
-  <script type="module" src="../js/auth.js"></script>
-  <script type="module" src="../js/master.js"></script>
-  <script type="module" src="../js/button.js"></script>
-  <script src="../js/mobile/mobile.js"></script>
+	<script type="module" src="../js/auth.js"></script>
+	<script type="module" src="../js/master.js"></script>
+	<script type="module" src="../js/button.js"></script>
+	<script src="../js/mobile/mobile.js"></script>
+	<script src="../js/scroll.js"></script>
 </body>
-
 </html>

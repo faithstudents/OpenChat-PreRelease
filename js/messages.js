@@ -18,12 +18,6 @@ const mainChatBtn = document.getElementById("main-chat")
 const channelList = document.getElementById("channel-list")
 const uploadImageBtn = document.getElementById("upload-image-btn")
 const imageInput = document.getElementById("image-input")
-const cancelReplyBtn = document.getElementById('cancel-reply');
-const replyPreview = document.getElementById('reply-preview');
-const userAvatar = document.getElementById("user_avatar");
-const settingsModal = document.getElementById("settings_modal");
-const settingsBtn = document.getElementById("settings_btn");
-const settingsExitbtn = document.getElementById("settings_exit_btn");
 
 let user = null
 const userCache = new Map()
@@ -60,14 +54,9 @@ async function init() {
     if (!roleError && roleData?.role) currentUserRole = roleData.role
     console.log("Logged in as:", currentUserRole)
 
-    const info = await getUserInfo(user.id)   // <-- fetch full user info
-    welcomeMsg.textContent = "Welcome to OpenChat " + info.username + "!"
-    modalUsername.textContent = info.username
-    userAvatar.src = info.avatar_url || '../assets/images/default-avatar.png'
-    const userTabName = document.getElementById("profileTab-username");
-    const settingsUserName = document.getElementById("profile-username");
-    userTabName.innerHTML = info.username;
-    settingsUserName.innerHTML = info.username;
+    const username = await loadProfileUsername(user.id)
+    welcomeMsg.textContent = "Welcome to OpenChat " + username + "!"
+    modalUsername.textContent = username
 
     await loadMessages()
     subscribeToNewMessages()
@@ -192,12 +181,6 @@ async function createMessageElement(msg, group = false) {
 
     const contentDiv = document.createElement('div')
     contentDiv.classList.add('message-content')
-
-    // const avatar = document.createElement('img');
-    // avatar.classList.add('message-avatar');
-    // avatar.src = userInfo.avatar_url || '../assets/images/default-avatar.png';
-    // avatar.alt = `${userName}'s avatar`;
-    // li.appendChild(avatar);
 
     // Show avatar + username only if NOT grouped
     // Inside createMessageElement(), replace header section with:
@@ -385,35 +368,27 @@ async function createMessageElement(msg, group = false) {
 }
 
 async function getUserInfo(userId) {
-    if (userCache.has(userId)) return userCache.get(userId);
+    if (userCache.has(userId)) return userCache.get(userId)
 
     const { data: profileData, error: profileError } = await supabase
         .from('profiles')
-        .select('username, avatar_url, description, status')
+        .select('username')
         .eq('id', userId)
-        .single();
+        .single()
 
-    let username, avatar_url, description, status;
+    let username
     if (profileError || !profileData?.username) {
-        // fallback to email if username not found
         const { data: userData, error: userError } = await supabase
             .from('users')
             .select('email')
             .eq('id', userId)
-            .single();
-        username = (userError || !userData?.email) ? 'Unknown' : userData.email.split('@')[0];
-        avatar_url = null;
-    } else {
-        username = profileData.username;
-        avatar_url = profileData.avatar_url || null;
-        description = profileData.description || ''
-    }
+            .single()
+        username = (userError || !userData?.email) ? 'Unknown' : userData.email.split('@')[0]
+    } else username = profileData.username
 
-    const userInfo = { 
-        id: userId, username, avatar_url, description: description || ''
-    };
-    userCache.set(userId, userInfo);
-    return userInfo;
+    const userInfo = { id: userId, username }
+    userCache.set(userId, userInfo)
+    return userInfo
 }
 
 async function appendMessage(msg) {
@@ -512,17 +487,6 @@ function parseLinks(content) {
             `;
         }
 
-        // Generic URL link
-        return `<a href="${url}" target="_blank" rel="noopener noreferrer" style="color: #00aaff;">${url}</a>`;
-    });
-}
-
-function parseLinksForDescription(content) {
-    if (!content) return '';
-
-    const urlRegex = /https?:\/\/[^\s]+/g;
-
-    return content.replace(urlRegex, url => {
         // Generic URL link
         return `<a href="${url}" target="_blank" rel="noopener noreferrer" style="color: #00aaff;">${url}</a>`;
     });
@@ -641,8 +605,8 @@ function updateFavicon(unread) {
 }
 
 // -------------------- PROFILE MODAL --------------------
-document.addEventListener("DOMContentLoaded", async () => {
-    const profileTab = document.getElementById("profile_info_container")
+document.addEventListener("DOMContentLoaded", () => {
+    const profileTab = document.getElementById("profile")
     const profileModal = document.getElementById("profile-modal")
     const closeProfileModal = document.getElementById("close-profile-modal")
     const editBtn = document.getElementById("editName")
@@ -651,46 +615,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     const cancelBtn = document.getElementById("cancelEdit")
     const newDisplayNameInput = document.getElementById("newDisplayName")
     const profileUsername = document.getElementById("profile-username")
-    const modalDescription = document.getElementById("modal-description");
 
-    // Settings Modal
-
-    profileTab.addEventListener("click", async () => {
+    profileTab.addEventListener("click", () => {
         profileModal.style.display = profileModal.style.display === "block" ? "none" : "block"
-
-        // Load user info for current user
-        const info = await getUserInfo(user.id)
-        modalUsername.textContent = info.username
-        profileUsername.textContent = info.username
-        document.getElementById("modal-avatar").src = info.avatar_url || '../assets/images/default-avatar.png'
-        modalDescription.innerHTML = parseLinksForDescription(info.description)
     })
     closeProfileModal.addEventListener("click", () => profileModal.style.display = "none")
     document.addEventListener("click", e => {
         if (!profileModal.contains(e.target) && !profileTab.contains(e.target)) profileModal.style.display = "none"
     })
-
-    const statusSelect = document.getElementById('status-select');
-
-    // Fetch current user info
-    const userInfo = await getUserInfo(user.id);
-
-    // Set initial status
-    statusSelect.value = userInfo.status || "Online";
-    setStatusDot(userInfo.status || "Online");
-
-    // Handle status change
-    statusSelect.addEventListener('change', async () => {
-        const newStatus = statusSelect.value;
-        setStatusDot(newStatus);
-
-        const { error } = await supabase
-            .from('profiles')
-            .update({ status: newStatus })
-            .eq('id', user.id);
-
-        if (error) console.error('Failed to update status:', error.message);
-    });
 
     editBtn.addEventListener("click", () => {
         editForm.style.display = "flex"
@@ -811,40 +743,3 @@ scrollBottomBtn.addEventListener('click', () => {
     messagesList.scrollTop = messagesList.scrollHeight
     scrollBottomBtn.style.display = 'none'
 })
-
-cancelReplyBtn.addEventListener('click', () => {
-    replyPreview.style.display = 'none';
-    delete messageInput.dataset.replyTo; // clear reply reference
-});
-
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && replyPreview.style.display === 'block') {
-        replyPreview.style.display = 'none';
-        delete messageInput.dataset.replyTo;
-    }
-});
-
-function setStatusDot(status) {
-    const statusEl = document.getElementById('modal-status');
-    statusEl.textContent = status;
-
-    // change color based on status
-    switch (status) {
-        case "Online": statusEl.style.color = "#48BB78"; break;
-        case "Offline": statusEl.style.color = "#A0AEC0"; break;
-        case "Do Not Disturb": statusEl.style.color = "#F56565"; break;
-        default: statusEl.style.color = "#48BB78"; break;
-    }
-}
-
-const ruleBtn = document.getElementById("rulesBtn").addEventListener('click', () => {
-    window.location.href = '../html/rules.html';
-});
-
-settingsBtn.addEventListener('click', () => {
-    settingsModal.style.display = 'block';
-});
-
-settingsExitbtn.addEventListener('click', () => {
-    settingsModal.style.display = 'none';
-});

@@ -1,0 +1,70 @@
+.modal_overlay h1 {
+    position: absolute;
+    left: 308px;
+}
+
+#settings_modal {
+    position: absolute;
+    width: 1500px;
+    height: 900px;
+    background-color: #202024;
+    z-index: 5000;
+    border-radius: 8px;
+    bottom: 25px;
+    left: 100px;
+    display: none;
+}
+
+#settings_exit_btn {
+    border: none;
+    border-radius: 5px;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.settings_modal_header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 45px;
+}
+
+.settings_sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    height: calc(100% - 45px);
+    gap: 8px;
+    background-color: #1a1a1e;
+    border-radius: 8px;
+}
+
+.settings_profile_display {
+    width: 275px;
+    height: 75px;
+    display: flex;
+    border-radius: 5px;
+    gap: 12px;
+    cursor: pointer;
+    align-items: center;
+    padding: 8px 12px;
+}
+
+.settings_profile_display:hover {
+    background-color: #2e2e32;
+}
+
+.settings_profile_display img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.settings_profile_display .settings_profile_info {
+    display: flex;
+    flex-direction: column;
+}
+
+.settings_profile_display #profile-username {
+    font-size: 18px;
+}
